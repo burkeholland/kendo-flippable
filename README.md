@@ -10,32 +10,34 @@ To use the plugin, simply create a container `div` with two child `div`s.  The _
 
 The card can be flipped either vertically (flipVertical) or horizontally (flipHorizontal).  
 
-        <div id="card">
-            <div>
-                <h1>Back</h1>
-            </div>
-            <div>
-                <h1>Front</h1>
-            </div>
-        </div>
+```
+<div id="card">
+    <div>
+        <h1>Back</h1>
+    </div>
+    <div>
+        <h1>Front</h1>
+    </div>
+</div>
 
-        <button id="flip">Flip!</button>
+<button id="flip">Flip!</button>
 
-        <script>
+<script>
 
-            (function() {
+    (function() {
 
-                var card = $('#card').kendoFlippable().data('kendoFlip');
+        var card = $('#card').kendoFlippable().data('kendoFlip');
 
-                $('#flip').kendoButton({
-                    click: function() {
-                        card.flipHorizontal();                    
-                    }
-                });
+        $('#flip').kendoButton({
+            click: function() {
+                card.flipHorizontal();                    
+            }
+        });
 
-            }());
+    }());
 
-        </script>
+</script>
+```
 
 ## Configuration
 
@@ -57,26 +59,28 @@ The height of the container element.  The container must have a fixed height sin
 
 A click/touch event is exposed assuming you might want to click on the element to flip it.  In that case, `e.sender` will contain a reference to the widget.
 
-        <div id="card">
-            <div>
-                <h1>Back</h1>
-            </div>
-            <div>
-                <h1>Front</h1>
-            </div>
-        </div>
+```
+<div id="card">
+    <div>
+        <h1>Back</h1>
+    </div>
+    <div>
+        <h1>Front</h1>
+    </div>
+</div>
 
-        <script>
-            (function() {
+<script>
+    (function() {
 
-                $('#card').kendoFlippable({
-                    click: function(e) {
-                        e.sender.flipHorizontal();    
-                    }
-                });
+        $('#card').kendoFlippable({
+            click: function(e) {
+                e.sender.flipHorizontal();    
+            }
+        });
 
-            }());
-        </script>
+    }());
+</script>
+```
 
 ## Methods
 
@@ -97,7 +101,3 @@ By default, the card has a white front and back.  Otherwise the front and back w
 Don't add more than two items to the Flip element.  I don't know what will happen if you do, but it's safe to assume that it won't work like you want it to.
 
 The plugin is going to give the outer container element a `relative` position and each of the child elements (front and back) an `absolute` position.  This is because the effect assumes that the front and back elements are stacked on top of each other before it manipulates them in the 3d space.
-
-## Responsive Flippable 
-
-Unless you specify a width for the container element, you 
