@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flip Test</title>
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.default.min.css">
+</head>
+<body>
+  
+  <div id="flipper" style="display: none; width: 400px; height: 400px" data-role="flippable" data-vertical="true" data-bind="click: flipH">
+    <div style="background-color: grey">
+      <img src="http://placekitten.com/400">
+    </div>
+    <div>
+      <img src="http://nicenicejpg.com/400">
+    </div>
+  </div>
+
+  <br>
+
+  <button data-role="button" data-bind="click: flipV">Flip Vertical</button>
+  <button data-role="button" data-bind="click: flipH">Flip Horizontal</button>
+
+  <script src="app/components/kendo-ui-core/js/jquery.min.js"></script>
+  <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script>
+  <script src="kendo.flip.js"></script>
+
+
+  <script>
+
+
+    (function ($) {
+
+      var model = {
+        flipV: function(e) {
+          console.log(e);
+          flipper.flipVertical();
+        },
+        flipH: function(e) {
+          flipper.flipHorizontal();
+        }
+      };
+
+      kendo.bind(document.body, model);
+
+      var flipper = $('#flipper').data('kendoFlippable');
+
+    }(jQuery));
+
+  </script>
+
+</body>
+</html>
