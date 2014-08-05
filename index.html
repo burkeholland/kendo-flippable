@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Flip Test</title>
-  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common.min.css">
-  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.default.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common-bootstrap.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.mobile.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
 </head>
@@ -20,7 +21,8 @@
     margin-bottom: 60px;
   }
   .front {
-    padding: 10px;
+    cursor: pointer;
+    padding: 20px;
     border: 1px #eee solid;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
     background-color: white;
@@ -28,7 +30,6 @@
   .back {
     border: 1px #eee solid;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
-    overflow: scroll;
   }
   .fa {
     cursor: pointer;
@@ -40,7 +41,31 @@
   .title {
     margin-left: 150;
   }
+  .tracks {
+    height: 200px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  .album-cover {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .album-cover > img {
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  .album-img {
+    position: absolute;
+  }
+  .progress {
+    width: 90%;
+    margin-left: 20px;
+  }
+  .subtext {
+    font-size: 12px;
+  }
 </style>
+
 <body>
   
   <audio id="player" style="display: none"></audio>
@@ -61,30 +86,29 @@
     <div class="col-sm-4">
       <div class="album" data-role="flippable" data-bind="events: { flipStart: flipStart }">
         <div class="back">
-          <div class="navbar navbar-default">
-            <div class="navbar-brand">
-              <a data-bind="click: flip"><i class="pointer fa fa-arrow-circle-left"> Back</i></a>
-            </div>  
+          <div data-role="kendo.mobile.ui.NavBar">
+            <span data-role="kendo.mobile.ui.ViewTitle">Tracks</span>
+            <div data-role="kendo.mobile.ui.Button" data-bind="click: flip" data-align="left">Back</div>
+          </div> 
+          <div class="tracks">
+            <ul data-role="kendo.mobile.ui.ListView" data-bind="source: tracks" data-auto-bind="false" data-template="track-template"></table>
           </div>
-          <table class="table" data-bind="source: tracks" data-auto-bind="false" data-template="track-template"></table>
         </div>
-        <div class="front">
+        <div class="front" data-role="touch" data-bind="events: { tap: flip }">
           <div class="row">
-            <div class="col-sm-4">
-              <img class="img-circle" src="#: artworkUrl100 #">
-              <h4>
-                <a data-bind="click: flip"><i class="fa fa-volume-up"> Listen</i><a/>
-              </h4>
+            <div class="col-lg-5">
+              <div class="album-cover">
+                <img class="img-circle" src="#: artworkUrl100 #">
+                <p><span class="badge">#: trackCount #</span> tracks</p>
+              </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-lg-7">
               <div class="row">
                 <div class="col-xs-12">
-                  <h3> #: collectionCensoredName #</h3>
+                  <h4> #: collectionCensoredName #</h4>
                 </div>
-              </div>
-              <div class="row"> 
-                <div class="col-xs-12">
-                  Genre: #: primaryGenreName #
+                <div class="col-xs-12 hidden-md hidden-sm">
+                  <p>Released #: kendo.toString(releaseDate, "MMM d, yyyy") #</p>
                 </div>
               </div>
             </div>
@@ -95,15 +119,12 @@
   </script>
 
   <script type="text/x-kendo-template" id="track-template">
-    <tr>
-      <td>
+
         <i class="fa fa-play" data-bind="click: play, invisible: isPlaying"></i>
         <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying"></i>
-      </td>
-      <td>
-        #: trackName #
-      </td>
-    </tr>
+    
+        <span> #: trackName #</span>        
+    
   </script>
 
   <br>
@@ -187,12 +208,14 @@
           filter: { field: "wrapperType", operator: "equals", value: "track" }
         }),
         flip: function(e) {
+
+          console.log(e);
           
           player.pause();
 
           resetPlayButtons();
 
-          var flippable = $(e.target).closest("[data-role='flippable']").data('kendoFlippable');
+          var flippable = $(e.sender.element).closest("[data-role='flippable']").data('kendoFlippable');
           flippable.flipHorizontal();
         },
         flipStart: function(e) {
@@ -224,8 +247,8 @@
       });
 
       var resetPlayButtons = function() {
-        $('.fa-play').show();
         $('.fa-pause').hide();
+        $('.fa-play').show();
       }
 
       kendo.bind(document.body, model);

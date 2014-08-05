@@ -42,6 +42,8 @@ var __meta__ = {
             element.on(FLIPSTART + NS, proxy(that._flipStart, that));
             element.on(FLIPEND + NS, proxy(that._flipEnd, that));
 
+            $(panes[0]).hide();
+
             element.show();
         },
 
