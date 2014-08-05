@@ -5,26 +5,111 @@
   <title>Flip Test</title>
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common.min.css">
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.default.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
 </head>
+<style>
+  body, html{
+    margin-top: 40px;
+    background-color: #f9f9f9;
+  }
+  .album {
+    display: none;
+    height: 250px;
+    margin-bottom: 60px;
+  }
+  .front {
+    padding: 10px;
+    border: 1px #eee solid;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+    background-color: white;
+  }
+  .back {
+    border: 1px #eee solid;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+    overflow: scroll;
+  }
+  .fa {
+    cursor: pointer;
+  }
+  .footer {
+    margin-left
+    margin-top: 200px;
+  }
+  .title {
+    margin-left: 150;
+  }
+</style>
 <body>
   
-  <div id="flipper" style="display: none; width: 400px; height: 400px" data-role="flippable" data-vertical="true" data-bind="click: flipH">
-    <div style="background-color: grey">
-      <img src="http://placekitten.com/400">
-    </div>
-    <div>
-      <img src="http://nicenicejpg.com/400">
+  <audio id="player" style="display: none"></audio>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Anberlin</h1>
+      </div>
     </div>
   </div>
 
   <br>
 
-  <button data-role="button" data-bind="click: flipV">Flip Vertical</button>
-  <button data-role="button" data-bind="click: flipH">Flip Horizontal</button>
+  <div class="container" data-bind="source: albumsDs" data-template="itunes-template"></div>
+
+  <script type="text/x-kendo-template" id="itunes-template">
+    <div class="col-sm-4">
+      <div class="album" data-role="flippable" data-bind="events: { flipStart: flipStart }">
+        <div class="back">
+          <div class="navbar navbar-default">
+            <div class="navbar-brand">
+              <a data-bind="click: flip"><i class="pointer fa fa-arrow-circle-left"> Back</i></a>
+            </div>  
+          </div>
+          <table class="table" data-bind="source: tracks" data-auto-bind="false" data-template="track-template"></table>
+        </div>
+        <div class="front">
+          <div class="row">
+            <div class="col-sm-4">
+              <img class="img-circle" src="#: artworkUrl100 #">
+              <h4>
+                <a data-bind="click: flip"><i class="fa fa-volume-up"> Listen</i><a/>
+              </h4>
+            </div>
+            <div class="col-sm-8">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3> #: collectionCensoredName #</h3>
+                </div>
+              </div>
+              <div class="row"> 
+                <div class="col-xs-12">
+                  Genre: #: primaryGenreName #
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-kendo-template" id="track-template">
+    <tr>
+      <td>
+        <i class="fa fa-play" data-bind="click: play, invisible: isPlaying"></i>
+        <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying"></i>
+      </td>
+      <td>
+        #: trackName #
+      </td>
+    </tr>
+  </script>
+
+  <br>
 
   <script src="app/components/kendo-ui-core/js/jquery.min.js"></script>
-  <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script>
-  <script src="kendo.flip.js"></script>
+  <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script >
+  <script src="kendo.flippable.js"></script>
 
 
   <script>
@@ -32,19 +117,117 @@
 
     (function ($) {
 
-      var model = {
-        flipV: function(e) {
-          console.log(e);
-          flipper.flipVertical();
+      var artistID = 16269045,
+          player = $('#player')[0];
+
+      var model = kendo.observable({
+        albumId: 0,
+        albumsDs:  new kendo.data.DataSource({
+          transport: {
+            read: {
+              url: "https://itunes.apple.com/lookup?id=" + artistID + "&entity=album",
+              dataType: "jsonp"
+            },
+          },
+          schema: {
+            data: "results",
+            parse: function(data) {
+              $.each(data.results, function() {
+                this.tracks = new kendo.data.ObservableArray([]);
+              });
+              return data;
+            },
+            model: {
+              id: "collectionId",
+              fields: {
+                releaseDate: {
+                  type: "date"
+                }
+              }
+            }
+          },
+          filter: { field: "wrapperType", operator: "equals", value: "collection" }
+        }),
+        tracksDs: new kendo.data.DataSource({
+          transport: {
+            read: {
+              url: function() {
+                return "https://itunes.apple.com/lookup?id=" + model.get("albumId") + "&entity=song";
+              },
+              dataType: "jsonp"
+            },
+          },
+          change: function(e) {
+            
+            var albums = model.get('albumsDs'),
+                id = model.get('albumId'),
+                album = albums.get(id);
+
+            album.set("tracks", this.view());
+
+          },
+          schema: {
+            data: "results",
+            parse: function(data) {
+              $.each(data.results, function() {
+                this.isPlaying = false;
+              });
+              return data;
+            },
+            model: {
+              id: 'collectionId',
+              fields: {
+                releaseDate: {
+                  type: "date"
+                }
+              }
+            }
+          },
+          filter: { field: "wrapperType", operator: "equals", value: "track" }
+        }),
+        flip: function(e) {
+          
+          player.pause();
+
+          resetPlayButtons();
+
+          var flippable = $(e.target).closest("[data-role='flippable']").data('kendoFlippable');
+          flippable.flipHorizontal();
         },
-        flipH: function(e) {
-          flipper.flipHorizontal();
+        flipStart: function(e) {
+          
+          this.set('albumId', e.data.collectionId);
+
+          if (e.data.tracks.length > 0) {
+            return;
+          }
+          else {
+            var tracks = this.get('tracksDs');
+            tracks.read();
+          }
+        },
+        play: function(e) {
+
+          resetPlayButtons();
+
+          player.src = e.data.previewUrl;
+          player.play();
+          
+          e.data.set('isPlaying', true);
+        },
+        stop: function(e) {
+          player.pause();
+          player.currentTime = 0;
+          e.data.set('isPlaying', false);
         }
-      };
+      });
+
+      var resetPlayButtons = function() {
+        $('.fa-play').show();
+        $('.fa-pause').hide();
+      }
 
       kendo.bind(document.body, model);
-
-      var flipper = $('#flipper').data('kendoFlippable');
 
     }(jQuery));
 

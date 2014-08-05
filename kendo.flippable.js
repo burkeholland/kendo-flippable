@@ -16,6 +16,8 @@ var __meta__ = {
         ui = kendo.ui,
         Widget = ui.Widget,
         CLICK = "click",
+        FLIPSTART = "flipStart",
+        FLIPEND = "flipEnd",
         NS = ".kendoFlip",
         proxy = $.proxy;
 
@@ -37,6 +39,8 @@ var __meta__ = {
             that._initEffect(element, panes);
 
             element.on(CLICK + NS, proxy(that._click, that));
+            element.on(FLIPSTART + NS, proxy(that._flipStart, that));
+            element.on(FLIPEND + NS, proxy(that._flipEnd, that));
 
             element.show();
         },
@@ -64,21 +68,25 @@ var __meta__ = {
 
             effect.stop();
 
-            reverse ? effect.reverse() : effect.play();
+            this._flipStart(this);
+
+            reverse ? effect.reverse().then(this._flipEnd(this)) : effect.play().then(this._flipEnd(this));
             this.reverse = !reverse;
+        },
+
+        _flipStart: function(e) {
+            this.trigger(FLIPSTART, { event: e });
+        },
+
+        _flipEnd: function(e) {
+            this.trigger(FLIPEND, { event: e });
         },
 
         _setContainerCSS: function(container) {
 
-            var clone = container.clone();
-
             container.css({
-                height: clone.height() || this.options.height
+                position: "relative"
             });
-
-            container.css({ "position": "relative" });
-
-            clone.remove();
 
         },
 
@@ -91,8 +99,6 @@ var __meta__ = {
 
                 pane.css({
                     position: "absolute",
-                    border: clone.css("border") || "1px solid #eee",
-                    backgroundColor: clone.css("background-color") || "white",
                     width: "100%",
                     height: "100%"
                 });
