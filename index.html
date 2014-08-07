@@ -13,7 +13,6 @@
 <style>
   body, html{
     margin-top: 40px;
-    background-color: #f9f9f9;
   }
   .album {
     display: none;
@@ -23,13 +22,8 @@
   .front {
     cursor: pointer;
     padding: 20px;
-    border: 1px #eee solid;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
   }
-  .back {
-    border: 1px #eee solid;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
-  }
+
   .fa {
     cursor: pointer;
   }
@@ -41,10 +35,11 @@
     margin-left: 150;
   }
   .tracks {
-    height: 200px;
+    height: 203px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
   }
+
   .album-cover {
     text-align: center;
     margin-bottom: 20px;
@@ -55,10 +50,6 @@
   }
   .album-img {
     position: absolute;
-  }
-  .progress {
-    width: 90%;
-    margin-left: 20px;
   }
   .subtext {
     font-size: 12px;
@@ -94,7 +85,7 @@
           </div>
         </div>
         <div class="front" data-role="touch" data-bind="events: { tap: flip }">
-          <div class="row">
+          
             <div class="col-lg-5">
               <div class="album-cover">
                 <img class="img-circle" src="#: artworkUrl100 #">
@@ -111,7 +102,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          
         </div>
       </div>
     </div>

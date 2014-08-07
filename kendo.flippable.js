@@ -89,18 +89,18 @@ var __meta__ = {
 
         _wrapper: function() {
 
-            var container = this.element,
+            var wrapper = this.element,
                 panes = this.panes;
 
-            var containerHeight = container.height();
+            var wrapperHeight = wrapper.height();
             var frontHeight = panes.first().height();
 
             height = this.options.height ||
-                (containerHeight > frontHeight ? containerHeight : frontHeight);
+                (wrapperHeight > frontHeight ? wrapperHeight : frontHeight);
 
-            container.css({
+            wrapper.css({
                 position: "relative",
-                height: height
+                height: height,
             });
 
         },
@@ -109,36 +109,34 @@ var __meta__ = {
             
             var panes = this.panes;
 
-            panes.addClass(".k-wdiget");
+            panes.addClass('k-header');
 
             panes.each(function() {
 
-                var pane = $(this);
-                var clone = $(this).clone();
+                var pane = $(this)
 
                 pane.css({
                     position: "absolute",
-                    height: "100%",
-                    width: "100%"
+                    width: "100%",
+                    height: "100%"
                 });
 
-                clone.remove();
             });
         },
 
         _effect: function() {
             
             var that = this,
-                container = that.element,
+                wrapper = that.element,
                 panes = that.panes,
                 back = panes.first(),
                 front = panes.next();
 
-            that.flipH = kendo.fx(container)
+            that.flipH = kendo.fx(wrapper)
                               .flipHorizontal(front, back)
                               .duration(that.options.duration);
 
-            that.flipV = kendo.fx(container)
+            that.flipV = kendo.fx(wrapper)
                               .flipVertical(front, back)
                               .duration(that.options.duration);
 
@@ -147,11 +145,11 @@ var __meta__ = {
 
         _show: function() {
             
-            var container = this.element,
+            var wrapper = this.element,
                 panes = this.panes;
 
             panes.first().hide();
-            container.show();
+            wrapper.show();
         },
 
         _click: function (e) {
