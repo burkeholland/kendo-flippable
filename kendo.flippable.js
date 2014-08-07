@@ -25,36 +25,37 @@ var __meta__ = {
         
         init: function(element, options) {
 
-            var that = this,
-                panes = $(element).children();
+            var that = this;
 
             Widget.fn.init.call(this, element, options);
 
             element = that.element;
 
-            that._setContainerCSS(that.element);
+            that.panes = element.children();
 
-            that._setPanesCSS(panes);
+            that._wrapper();
 
-            that._initEffect(element, panes);
+            that._panes();
+
+            that._effect();
 
             element.on(CLICK + NS, proxy(that._click, that));
             element.on(FLIPSTART + NS, proxy(that._flipStart, that));
             element.on(FLIPEND + NS, proxy(that._flipEnd, that));
 
-            $(panes[0]).hide();
-
-            element.show();
+            that._show();
         },
 
         options: {
-            height: 400,
+            height: 0,
             name: "Flippable",
             duration: 800
         },
     
         events: [
-            CLICK
+            CLICK,
+            FLIPSTART,
+            FLIPEND
         ],
     
         flipVertical: function() {
@@ -77,23 +78,39 @@ var __meta__ = {
         },
 
         _flipStart: function(e) {
+
             this.trigger(FLIPSTART, { event: e });
         },
 
         _flipEnd: function(e) {
-            this.trigger(FLIPEND, { event: e });
+
+            this.trigger(FLIPEND, { event: e });    
         },
 
-        _setContainerCSS: function(container) {
+        _wrapper: function() {
+
+            var container = this.element,
+                panes = this.panes;
+
+            var containerHeight = container.height();
+            var frontHeight = panes.first().height();
+
+            height = this.options.height ||
+                (containerHeight > frontHeight ? containerHeight : frontHeight);
 
             container.css({
-                position: "relative"
+                position: "relative",
+                height: height
             });
 
         },
 
-        _setPanesCSS: function(panes) {
+        _panes: function() {
             
+            var panes = this.panes;
+
+            panes.addClass(".k-wdiget");
+
             panes.each(function() {
 
                 var pane = $(this);
@@ -101,19 +118,21 @@ var __meta__ = {
 
                 pane.css({
                     position: "absolute",
-                    width: "100%",
-                    height: "100%"
+                    height: "100%",
+                    width: "100%"
                 });
 
                 clone.remove();
             });
         },
 
-        _initEffect: function(container, panes) {
+        _effect: function() {
             
             var that = this,
-            front = panes[1],
-            back = panes[0];
+                container = that.element,
+                panes = that.panes,
+                back = panes.first(),
+                front = panes.next();
 
             that.flipH = kendo.fx(container)
                               .flipHorizontal(front, back)
@@ -124,6 +143,15 @@ var __meta__ = {
                               .duration(that.options.duration);
 
             that.reverse = false;
+        },
+
+        _show: function() {
+            
+            var container = this.element,
+                panes = this.panes;
+
+            panes.first().hide();
+            container.show();
         },
 
         _click: function (e) {
