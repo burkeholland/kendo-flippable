@@ -48,6 +48,7 @@ var __meta__ = {
 
         options: {
             height: 0,
+            width: 0,
             name: "Flippable",
             duration: 800
         },
@@ -101,6 +102,7 @@ var __meta__ = {
             wrapper.css({
                 position: "relative",
                 height: height,
+                width: this.options.width || "auto"
             });
 
         },
