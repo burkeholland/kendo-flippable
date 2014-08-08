@@ -131,8 +131,8 @@ var __meta__ = {
             var that = this,
                 wrapper = that.element,
                 panes = that.panes,
-                back = panes.first(),
-                front = panes.next();
+                front = panes.first(),
+                back = panes.next();
 
             that.flipH = kendo.fx(wrapper)
                               .flipHorizontal(front, back)
@@ -142,6 +142,8 @@ var __meta__ = {
                               .flipVertical(front, back)
                               .duration(that.options.duration);
 
+            back.hide();
+
             that.reverse = false;
         },
 
@@ -150,7 +152,6 @@ var __meta__ = {
             var wrapper = this.element,
                 panes = this.panes;
 
-            panes.first().hide();
             wrapper.show();
         },
 
