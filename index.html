@@ -7,70 +7,27 @@
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common-bootstrap.min.css">
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.min.css">
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.mobile.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
+  <link rel="stylesheet" href="app/components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="app/components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="app/styles/main.css">
 </head>
 <style>
-  body, html{
-    margin-top: 40px;
-  }
-  .album {
-    display: none;
-    height: 250px;
-    margin-bottom: 60px;
-  }
-  .front {
-    cursor: pointer;
-    padding: 20px;
-  }
-
-  .fa {
-    cursor: pointer;
-  }
-  .footer {
-    margin-left
-    margin-top: 200px;
-  }
-  .title {
-    margin-left: 150;
-  }
-  .tracks {
-    height: 203px;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .album-cover {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .album-cover > img {
-    height: 100px;
-    margin-bottom: 10px;
-  }
-  .album-img {
-    position: absolute;
-  }
-  .subtext {
-    font-size: 12px;
-  }
+  
 </style>
 
 <body>
-  
+
   <audio id="player" style="display: none"></audio>
 
-  <div class="container">
+  <header class="container">
     <div class="row">
-      <div class="col-xs-12">
-        <h1>Anberlin</h1>
+      <div class="col-xs-12 header">
+        <img class="img-responsive" src="app/styles/images/anberlin.jpg">
       </div>
     </div>
-  </div>
-
-  <br>
-
-  <div class="container" data-bind="source: albumsDs" data-template="itunes-template"></div>
+  </header>
+    
+  <section class="container" data-bind="source: albumsDs" data-template="itunes-template"></section>
 
   <script type="text/x-kendo-template" id="itunes-template">
     <div class="col-sm-4">
@@ -107,12 +64,9 @@
   </script>
 
   <script type="text/x-kendo-template" id="track-template">
-
-        <i class="fa fa-play" data-bind="click: play, invisible: isPlaying"></i>
-        <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying"></i>
-    
-        <span> #: trackName #</span>        
-    
+    <i class="fa fa-play" data-bind="click: play, invisible: isPlaying"></i>
+    <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying"></i>
+    <span> #: trackName #</span>        
   </script>
 
   <br>
@@ -127,9 +81,10 @@
 
     (function ($) {
 
+      // anberlin's itunes artist id
       var artistID = 16269045,
           player = $('#player')[0];
-
+      
       var model = kendo.observable({
         albumId: 0,
         albumsDs:  new kendo.data.DataSource({
@@ -143,6 +98,8 @@
             data: "results",
             parse: function(data) {
               $.each(data.results, function() {
+                // add a place holder on the albums ds for tracks which is not 
+                // included in the original response
                 this.tracks = new kendo.data.ObservableArray([]);
               });
               return data;
@@ -158,6 +115,7 @@
           },
           filter: { field: "wrapperType", operator: "equals", value: "collection" }
         }),
+
         tracksDs: new kendo.data.DataSource({
           transport: {
             read: {
@@ -168,7 +126,10 @@
             },
           },
           change: function(e) {
-            
+        
+            // when the tracks are received, lookup the corresponding album and add
+            // these tracks to the tracks placeholder on that album
+
             var albums = model.get('albumsDs'),
                 id = model.get('albumId'),
                 album = albums.get(id);
@@ -179,6 +140,8 @@
           schema: {
             data: "results",
             parse: function(data) {
+              // add a default 'isPlaying' flag which will be used later to determine
+              // the state of a particular track in the UI
               $.each(data.results, function() {
                 this.isPlaying = false;
               });
@@ -195,19 +158,24 @@
           },
           filter: { field: "wrapperType", operator: "equals", value: "track" }
         }),
+        
         flip: function(e) {
-          
+
           player.pause();
 
           resetPlayButtons();
 
           var flippable = $(e.sender.element).closest("[data-role='flippable']").data('kendoFlippable');
+        
           flippable.flipHorizontal();
         },
+        
         flipStart: function(e) {
           
           this.set('albumId', e.data.collectionId);
 
+          // only make a remote call for tracks if there are not yet any 
+          // tracks associated with this album
           if (e.data.tracks.length > 0) {
             return;
           }
@@ -216,6 +184,7 @@
             tracks.read();
           }
         },
+        
         play: function(e) {
 
           resetPlayButtons();
@@ -225,6 +194,7 @@
           
           e.data.set('isPlaying', true);
         },
+
         stop: function(e) {
           player.pause();
           player.currentTime = 0;
