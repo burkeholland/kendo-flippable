@@ -42,6 +42,7 @@ body, html{
 
   .header {
     margin-bottom: 20px;
+    text-align: center;
   }
 
   .header > img {
