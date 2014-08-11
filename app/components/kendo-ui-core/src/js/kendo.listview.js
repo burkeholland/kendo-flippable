@@ -371,7 +371,7 @@ var __meta__ = {
                 } else if (elementOffset < containerScrollAmount) {
                     $(container)[SCROLL + direction](elementOffset);
                 }
-            };
+            };hipc
 
             scrollDirectionFunc("Top", "Height");
             scrollDirectionFunc("Left", "Width");

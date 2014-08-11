@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Flip Test</title>
   <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.common-bootstrap.min.css">
-  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.min.css">
-  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.uniform.min.css">
+  <link rel="stylesheet" href="app/components/kendo-ui-core/styles/kendo.uniform.mobile.min.css">
   <link rel="stylesheet" href="app/components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="app/components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="app/styles/main.css">
@@ -23,6 +23,7 @@
     <div class="row">
       <div class="col-xs-12 header">
         <img class="img-responsive" src="app/styles/images/anberlin.jpg">
+        <a href="http://www.github.com/burkeholland/kendo-flippable"><p>View Kendo Flippable Plugin On GitHub</p></a>
       </div>
     </div>
   </header>
@@ -42,7 +43,7 @@
           <div class="col-lg-7">
             <div class="row">
               <div class="col-xs-12">
-                <h4> #: collectionCensoredName #</h4>
+                <h4 title="#: collectionCensoredName #"> #: collectionCensoredName #</h4>
               </div>
               <div class="col-xs-12 hidden-md hidden-sm">
                 <p>Released #: kendo.toString(releaseDate, "MMM d, yyyy") #</p>
@@ -69,10 +70,8 @@
     <span> #: trackName #</span>        
   </script>
 
-  <br>
-
   <script src="app/components/kendo-ui-core/js/jquery.min.js"></script>
-  <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script >
+  <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script>
   <script src="kendo.flippable.js"></script>
 
 
