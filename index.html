@@ -65,9 +65,12 @@
   </script>
 
   <script type="text/x-kendo-template" id="track-template">
-    <i class="fa fa-play" data-bind="click: play, invisible: isPlaying"></i>
-    <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying"></i>
-    <span> #: trackName #</span>        
+    <i class="fa fa-play" data-bind="click: play, invisible: isPlaying">
+      <span> #: trackName #</span>
+    </i>
+    <i class="fa fa-pause" data-bind="click: stop, visible: isPlaying">
+      <span> #: trackName #</span>
+    </i>
   </script>
 
   <script src="app/components/kendo-ui-core/js/jquery.min.js"></script>
