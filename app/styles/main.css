@@ -24,6 +24,13 @@ body, html{
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
+.tracks li {
+  padding: 0;
+}
+.tracks i {
+  display: block;
+  padding: 0.7em;
+}
 
 .album-cover {
   text-align: center;
