@@ -24,5 +24,9 @@
   ],
   "dependencies": {
     "kendo-ui-core": "~2014.2.716"
+  },
+  "devDependencies": {
+    "bootstrap": "~3.2.0",
+    "font-awesome": "~4.1.0"
   }
 }
