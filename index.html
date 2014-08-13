@@ -10,14 +10,23 @@
   <link rel="stylesheet" href="app/components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="app/components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="app/styles/main.css">
+  <link rel="stylesheet" href="//cdn.kendostatic.com/2014.2.716/styles/kendo.dataviz.min.css" />
 </head>
 <style>
-  
+  #chart{
+    filter: alpha(opacity=20);
+    opacity: 0.2;
+    height: 100%;
+    position: fixed !important;
+    width: 100%;
+    z-index: -1;
+  }
 </style>
 
 <body>
 
   <audio id="player" style="display: none"></audio>
+  <div id="chart"></div>
 
   <header class="container">
     <div class="row">
@@ -75,7 +84,9 @@
 
   <script src="app/components/kendo-ui-core/js/jquery.min.js"></script>
   <script src="app/components/kendo-ui-core/js/kendo.ui.core.min.js"></script>
+  <script src="//cdn.kendostatic.com/2014.2.716/js/kendo.dataviz.min.js"></script>
   <script src="kendo.flippable.js"></script>
+  <script src="app/js/audio-visualisation.js"></script>
 
 
   <script>
