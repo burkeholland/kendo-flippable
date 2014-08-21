@@ -2,6 +2,8 @@
 
 Kendo Flippable is a plugin for Kendo UI that creates a flipping card.  The card, containing a front and back face, can be flipped either vertically or horizontally.
 
+[Check The Demo](http://burkeholland.github.io/kendo-flippable)
+
 ## Basic Usage
 
 The Flippable plugin simply abstracts the [kendo.fx.flip](http://docs.telerik.com/kendo-ui/api/framework/fx/flip)(Horizontal or Vertical) into a plugin.  The flip effect is really neat, but requires very specific CSS for the elements it is applied to and I can never remember what those are.
