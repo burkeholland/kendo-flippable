@@ -1,8 +1,34 @@
 {
-  "name": "kendo-flippable",
-  "version": "0.1.0",
+  "name": "itunes-artist-search",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Burke Holland <burkeholland@gmail.com> (http://a.shinynew.me/)",
+  "license": "ISC",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "^0.5.1"
+    "jspm": "^0.15.7"
+  },
+  "jspm": {
+    "directories": {},
+    "dependencies": {
+      "bootstrap": "github:twbs/bootstrap@^3.3.5",
+      "burkeholland/kendo-flippable": "github:burkeholland/kendo-flippable@master",
+      "font-awesome": "npm:font-awesome@^4.3.0",
+      "jquery": "github:components/jquery@^2.1.4",
+      "kendo-ui": "github:kendo-labs/bower-kendo-ui@^2015.2.727"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
+    },
+    "overrides": {
+      "github:kendo-labs/bower-kendo-ui@2015.2.727": {
+        "format": "amd"
+      }
+    }
   }
 }

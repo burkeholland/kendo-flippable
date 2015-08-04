@@ -1,0 +1,10 @@
+import 'kendo-ui/src/js/kendo.core';
+import 'kendo-ui/src/js/kendo.data';
+import 'kendo-ui/src/js/kendo.binder';
+import 'kendo-ui/src/js/kendo.fx';
+import 'kendo-ui/src/js/kendo.responsivepanel';
+import 'kendo-ui/src/js/kendo.autocomplete';
+import 'kendo-ui/src/js/kendo.mobile.listview';
+import 'kendo-ui/src/js/kendo.mobile.button';
+import 'kendo-ui/src/js/kendo.mobile.navbar';
+import 'kendo-ui/src/js/kendo.touch';

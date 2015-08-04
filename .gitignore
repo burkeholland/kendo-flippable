@@ -26,3 +26,5 @@ node_modules
 
 # Bower
 
+# JSPM
+jspm_packages
