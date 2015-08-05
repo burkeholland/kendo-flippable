@@ -28,4 +28,4 @@ node_modules
 
 # JSPM
 jspm_packages/github
-jspm_packages/npm
+jspm_packages/npm/font-awesome@4.3.0
