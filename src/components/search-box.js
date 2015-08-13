@@ -19,7 +19,7 @@ let observable = kendo.observable({
 						media: 'music',
 						country: 'US',
 						entity: 'musicArtist',
-						term: options.filter.filter[0].value
+						term: options.filter.filters[0].value
 					}
 				}
 			}
