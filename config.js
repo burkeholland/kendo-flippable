@@ -15,8 +15,8 @@ System.config({
 
 System.config({
   "map": {
-    "babel": "npm:babel-core@5.8.3",
-    "babel-runtime": "npm:babel-runtime@5.8.3",
+    "babel": "npm:babel-core@5.8.20",
+    "babel-runtime": "npm:babel-runtime@5.8.20",
     "bootstrap": "github:twbs/bootstrap@3.3.5",
     "core-js": "npm:core-js@0.9.18",
     "font-awesome": "npm:font-awesome@4.3.0",
@@ -34,6 +34,9 @@ System.config({
     },
     "github:twbs/bootstrap@3.3.5": {
       "jquery": "github:components/jquery@2.1.4"
+    },
+    "npm:babel-runtime@5.8.20": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:babel-runtime@5.8.3": {
       "process": "github:jspm/nodelibs-process@0.1.1"
